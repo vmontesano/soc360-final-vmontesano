@@ -1,0 +1,75 @@
+---
+title: "Final Workspace"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r json}
+library(jsonlite)
+library(tidyverse)
+library(ggplot2)
+library(lubridate)
+```
+
+```{r, 'data', echo=FALSE}
+
+data1 <- read_json("C:/Users/vin/OneDrive/Desktop/SOC360/Final/soc360-final-vmontesano/factbook.json")
+```
+
+```{r, 'extraction'}
+
+populationtotals <- c()
+
+for (i in c('bangladesh', 'india', 'philippines', 'cambodia', 'fiji', 'thailand', 'vietnam', 'nepal')){
+  x <- data1$countries[[i]]$data$people$population$total
+  populationtotals <- append(populationtotals,x)}
+
+realgrowth <- c()
+
+for (i in c('bangladesh', 'india', 'philippines', 'cambodia', 'fiji', 'thailand', 'vietnam', 'nepal')){
+  x <- data1$countries[[i]]$data$economy$gdp$real_growth_rate$annual_values[[1]][1]
+  realgrowth <- append(realgrowth,x)}
+
+ppc <- c()
+
+for (i in c('bangladesh', 'india', 'philippines', 'cambodia', 'fiji', 'thailand', 'vietnam', 'nepal')){
+  x <- data1$countries[[i]]$data$economy$gdp$per_capita_purchasing_power_parity$annual_values[[1]][1]
+  ppc <- append(ppc,x)}
+```
+
+```{r, 'time'}
+
+CurrentTime <- Sys.time()
+
+BangTime <- with_tz(CurrentTime, tzone = "UTC") + 0600
+
+IndiaTime <- with_tz(CurrentTime, tzone = "UTC") + 0530
+
+PhilTime <- with_tz(CurrentTime, tzone = "UTC") + 0800
+
+```
+
+
+```{r, 'table'}
+df <- as.data.frame(c('Bangladesh', 'India', 'Philippines', 'Cambodia', 'Fiji', 'Thailand', 'Vietnam', 'Nepal')) %>% add_column(populationtotals) %>% add_column(realgrowth %>% as.numeric()) %>% add_column(ppc %>% as.numeric())
+
+colnames(df) <- c('Country', 'Population', 'RealGrowthRate', 'PPPperCapita')
+```
+
+```{r, 'bar graph'}
+
+ggplot(df, aes(x = Country, y = Population)) + geom_col()
+
+ggplot(df, aes(x = Country, y = RealGrowthRate)) + geom_col()
+
+ggplot(df, aes(x = Country, y = PPPperCapita)) + geom_col()
+
+```
+```{r, 'csv'}
+
+write_csv(df, "C:/Users/vin/OneDrive/Desktop/SOC360/Final/soc360-final-vmontesano/final_data.csv")
+```
+
