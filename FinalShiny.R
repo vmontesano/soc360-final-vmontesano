@@ -6,7 +6,7 @@ library(ggplot2)
 library(lubridate)
 library(scales)
 
-data <- read_csv("C:/Users/vin/OneDrive/Desktop/SOC360/Final/soc360-final-vmontesano/final_data.csv")
+data <- read_csv("https://raw.githubusercontent.com/vmontesano/soc360-final-vmontesano/main/final_data.csv")
 
 CurrentTime <- Sys.time()
 

@@ -12,11 +12,13 @@ library(jsonlite)
 library(tidyverse)
 library(ggplot2)
 library(lubridate)
+library(scales)
+library(shiny)
 ```
 
 ```{r, 'data', echo=FALSE}
 
-data1 <- read_json("C:/Users/vin/OneDrive/Desktop/SOC360/Final/soc360-final-vmontesano/factbook.json")
+data1 <- read_json("factbook.json")
 ```
 
 ```{r, 'extraction'}
@@ -70,6 +72,6 @@ ggplot(df, aes(x = Country, y = PPPperCapita)) + geom_col()
 ```
 ```{r, 'csv'}
 
-write_csv(df, "C:/Users/vin/OneDrive/Desktop/SOC360/Final/soc360-final-vmontesano/final_data.csv")
+write_csv(df, "final_data.csv")
 ```
 
